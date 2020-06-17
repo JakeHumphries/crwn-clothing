@@ -13,6 +13,33 @@ const config = {
   measurementId: "G-T8TSZ9NBG0",
 };
 
+export const createUserProfileDocument = async (userAuth, additionalData) => {
+  if (!userAuth) return;
+
+  // checking if user already exists, if the user doesnt exist we still get back an object with id you sent and path
+  const userRef = firestore.doc(`users/${userAuth.uid}`); // this is getting the doc ref, from here you can perform crud operations
+
+  const snapShot = await userRef.get();
+
+  if (!snapShot.exists) {
+    const { displayName, email } = userAuth;
+    const createdAt = new Date();
+
+    try {
+      await userRef.set({
+        displayName,
+        email,
+        createdAt,
+        ...additionalData,
+      });
+    } catch (err) {
+      console.log("error creating user", err.message);
+    }
+  }
+
+  return userRef;
+};
+
 firebase.initializeApp(config);
 
 export const auth = firebase.auth();
