@@ -81,3 +81,4 @@ export default connect(mapStateToProps, mapDispatchToProps)(App);
 // TO DO //
 // Error when the user already exists on sign up
 // hide the cart-dropdown when moving pages
+// re learn the react router functions e.g. history fn
